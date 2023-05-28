@@ -1,0 +1,47 @@
+---
+- hosts: all
+  become: yes
+  tasks: 
+    - name: setup required packages
+      apt:
+        name: "{{item}}"
+        update_cache: yes
+      loop:
+        - curl
+        - apt-transport-https
+        - git
+        - wget
+        - ca-certificates
+        - gnupg-agent
+        - software-properties-common
+        - aptitude
+        - build-essential
+        - gawk
+        - net-tools
+        - golang
+        - iptables
+        - libaio-dev
+        - libapparmor-dev
+        - libcap-dev
+        - libdevmapper-dev
+        - libdevmapper1.02.1
+        - libglib2.0-dev
+        - libgpgme11-dev
+        - libjson-glib-dev
+        - libprotobuf-dev
+        - libseccomp-dev
+        - libseccomp2
+        - pkg-config
+        - protobuf-compiler
+
+    - name: Make directories
+      file:
+        path: "{{item}}"
+        state: directory
+      with_items:
+        - /usr/local/go
+        - /etc/systemd/system/kubelet.service.d/
+        - /var/lib/etcd
+        - /etc/cni/net.d
+        - /net/containers
+
