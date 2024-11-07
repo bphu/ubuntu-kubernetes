@@ -13,6 +13,7 @@
         - wget
         - ca-certificates
         - gnupg-agent
+        - gnupg
         - software-properties-common
         - aptitude
         - build-essential
@@ -33,6 +34,7 @@
         - libseccomp2
         - pkg-config
         - protobuf-compiler
+        - lsb-release
 
     - name: Make directories
       file:

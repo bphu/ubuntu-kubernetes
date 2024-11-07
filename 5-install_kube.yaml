@@ -41,15 +41,10 @@
                curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
      - name: Create kubernetes repo file
-       file:
-         path: "/etc/apt/sources.list.d/kubernetes.list"
-         state: "touch"
-
-     - name: Add K8s Source
-       blockinfile:
-         path: "/etc/apt/sources.list.d/kubernetes.list"
-         block: |
-               deb https://apt.kubernetes.io/ kubernetes-xenial main
+       shell: |
+               sudo rm /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+               sudo curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+               echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
      - name: install kubernetes
        shell: |
