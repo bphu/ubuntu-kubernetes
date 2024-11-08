@@ -1,0 +1,23 @@
+---
+- hosts: all
+  tasks:
+    - name: cleaning up install
+      shell: |
+              kubectl drain master --delete-local-data --force --ignore-daemonsets
+              kubectl delete node master
+              kubectl drain slave1 --delete-local-data --force --ignore-daemonsets
+              kubectl delete node slave1
+              kubectl drain slave2 --delete-local-data --force --ignore-daemonsets
+              kubectl delete node slave2
+              kubectl drain slave3 --delete-local-data --force --ignore-daemonsets
+              kubectl delete node slave3
+              sudo kubeadm reset
+              sudo rm -rf /etc/kubernetes/
+              sudo rm -rf $HOME/.kube
+              sudo rm -rf /etc/cni/net.d
+              sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*
+              sudo apt-get autoremove
+              sudo iptables -F
+              sudo docker rm -f $(sudo docker ps -aq)
+              sudo docker rmi $(sudo docker images -q)
+
