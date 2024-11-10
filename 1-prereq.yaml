@@ -35,6 +35,7 @@
         - pkg-config
         - protobuf-compiler
         - lsb-release
+        - acl
 
     - name: Make directories
       file:
