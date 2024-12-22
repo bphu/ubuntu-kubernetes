@@ -1,0 +1,23 @@
+---
+- hosts: all
+  remote_user: kube
+  become: yes
+  become_method: sudo
+  become_user: root
+  gather_facts: yes
+  connection: ssh
+
+  tasks:
+    - name: Make sure swap is disabled
+      shell: |
+               sudo swapoff -a
+               sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+    - name: Loading necessary kernel modules
+      shell: |
+               sudo modprobe overlay
+               sudo modprobe br_netfilter
+
+    - name: make sure kubelet is running
+      shell: |
+               sudo systemctl start kubelet
